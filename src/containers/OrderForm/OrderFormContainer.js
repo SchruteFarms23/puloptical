@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 
 export default class OrderFormContainer extends Component {
   state = {
-    formId:"",
-    patientId:"",
+    formId:"",//fetch from backend upon mounting
+    patientId:"",//fetch from backend upon mounting
     firstName:"",
     lastName:"",
     phoneNum:"",
@@ -16,6 +16,22 @@ export default class OrderFormContainer extends Component {
     hiPlastic:{onesixty:false,onesixtyseven:false,oneseventyfour:false}
   };
 
+  componentDidMount(){
+    console.log('first')
+    let date = new Date()
+    console.log(typeof date)
+    console.log(date)
+    let month = date.getMonth() + 1
+    let day = date.getDate()
+    let year = date.getFullYear()
+    let fullDate = `${month}/${day}/${year}`
+    console.log(fullDate)
+
+    this.setState({
+      date:fullDate
+    })
+
+  }
 
   handleTextInput = (e) => {
     console.log(e.target.value)
@@ -62,6 +78,9 @@ export default class OrderFormContainer extends Component {
           onChange={this.handleTextInput}
         />
       <input type="submit" value="Submit" />
+      <div>
+        <p> Date:{this.state.date}</p>
+      </div>
 
       </form>
     )
