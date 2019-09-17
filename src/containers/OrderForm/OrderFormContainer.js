@@ -17,20 +17,17 @@ export default class OrderFormContainer extends Component {
   };
 
   componentDidMount(){
-    console.log('first')
     let date = new Date()
-    console.log(typeof date)
-    console.log(date)
     let month = date.getMonth() + 1
     let day = date.getDate()
     let year = date.getFullYear()
     let fullDate = `${month}/${day}/${year}`
-    console.log(fullDate)
 
-    this.setState({
-      date:fullDate
-    })
-
+    if(this.state.date === "" ){
+      this.setState({
+        date:fullDate
+      })
+    }
   }
 
   handleTextInput = (e) => {
@@ -42,16 +39,26 @@ export default class OrderFormContainer extends Component {
     })
   }
 
+  handleComplexTextInput = (e) => {
+    console.log(e.target.value)
+    let value = e.target.value;
+    let name = e.target.name;
+    let primary = name.split(".")[0]
+    let secondary = name.split(".")[1]
+    this.setState((prevState) => {
+      const newState = Object.assign({}, prevState);
+      newState[primary][secondary] = value;
+      return newState;
+    })
+  }
+
   handleSubmit = (e) => {
     console.log('You just submitted the form')
-    debugger
+    console.log(this.state.date)
+
   }
 
   render(){
-    console.log(`Last name is ${this.state.lastName}`)
-    console.log(`first name is ${this.state.firstName}`)
-    console.log(`first name is ${this.state.phoneNum}`)
-
     return(
       <form onSubmit={this.handleSubmit}>
         <input
@@ -61,26 +68,42 @@ export default class OrderFormContainer extends Component {
           placeholder="Last Name"
           onChange={this.handleTextInput}
         />
-      <input
+        <input
+            type="text"
+            title="First Name"
+            name="firstName"
+            placeholder="First Name"
+            value={this.state.firstName}
+            onChange={this.handleTextInput}
+        />
+        <input
+            type="text"
+            title={"Phone Number"}
+            name="phoneNum"
+            placeholder="ex. 3476220158"
+            value={this.state.phoneNum}
+            onChange={this.handleTextInput}
+        />
+        <input
           type="text"
-          title="First Name"
-          name="firstName"
-          placeholder="First Name"
-          value={this.state.firstName}
+          title="date"
+          name="date"
+          placeholder="mm/dd/yyyy"
+          value={this.state.date}
           onChange={this.handleTextInput}
         />
-      <input
+        <input
           type="text"
-          title={"Phone Number"}
-          name="phoneNum"
-          placeholder="ex. 3476220158"
-          value={this.state.phoneNum}
-          onChange={this.handleTextInput}
+          title="right sphere"
+          name="rightEye.sphere"
+          placeholder="ex. -2.00"
+          value={this.state.rightEye.sphere}
+          onChange={this.handleComplexTextInput}
         />
-      <input type="submit" value="Submit" />
-      <div>
-        <p> Date:{this.state.date}</p>
-      </div>
+        <input
+          type="submit"
+          value="Submit"
+        />
 
       </form>
     )
